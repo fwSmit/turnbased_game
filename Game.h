@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include <iostream>
 
@@ -45,13 +46,16 @@ struct Board{
 class Game{
 protected:
 	Board board;
+	enum player_t : int {player_1, player_2};
+	int player = player_t::player_1;
 public:
+	virtual void nextPlayer();
+	Piece getCurrentPlayerPiece();
 	virtual void makeMove(Move move){};
 	virtual void printBoard(){};
 	virtual std::vector<Move> getAvailableMoves(){ return std::vector<Move>();};
 	virtual bool hasWon(){ return bool();}; // has the current player won?
 	Game();
 private:
-	virtual void nextPlayer(){};
 };
 

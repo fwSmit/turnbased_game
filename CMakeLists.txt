@@ -5,4 +5,4 @@ project (turnbased_game)
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
 set (CMAKE_CXX_STANDARD 11)
-add_executable(turnbased_game Game.cpp tictactoe.cpp main.cpp)
+add_executable(turnbased_game Game.cpp tictactoe.cpp connect4.cpp main.cpp)
