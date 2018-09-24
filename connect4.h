@@ -16,7 +16,7 @@ class connect4 : public Game{
 public:
 	void playMove(Move move) override;
 	bool hasEnded();
-	connect4();
+	connect4(bool isFirstPlayerAI, bool isSecondPlayerAI);
 	void printBoard() override;
 	void takeUserInput();
 };

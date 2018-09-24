@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <iostream>
 
 enum pieceType : char {player1 = 'X', player2 = 'O', empty = ' '};
 
@@ -52,6 +51,7 @@ protected:
 	Board board;
 	enum player_t : int {player_1, player_2};
 	int player = player_t::player_1;
+	bool isAITurn = false;
 	virtual bool isBoardFull(){return board.isFull();}
 	virtual std::vector<Move> getAvailableMoves() const = 0;
 	virtual Score getBoardScore() = 0;
@@ -61,7 +61,7 @@ public:
 	virtual Piece getCurrentPlayerPiece();
 	virtual void printBoard() = 0;
 	virtual bool hasWon() = 0; // has the current player won?
-	Game();
+	Game(bool isFirstPlayerAI, bool isSecondPlayerAI);
 private:
 };
 

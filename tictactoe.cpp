@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-tictactoe::tictactoe(){
+tictactoe::tictactoe(bool isFirstPlayerAI, bool isSecondPlayerAI) : Game(isFirstPlayerAI, isSecondPlayerAI){
 	board.setSize(3, 3);
 	//board.set(2, 0, pieceType::player1);
 }

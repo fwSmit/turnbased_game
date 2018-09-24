@@ -1,6 +1,7 @@
 #include "Game.h"
+#include <iostream>
 
-Game::Game(){
+Game::Game(bool isFirstPlayerAI, bool isSecondPlayerAI){
 	
 }
 

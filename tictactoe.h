@@ -17,6 +17,6 @@ public:
 	bool hasEnded();
 	bool isLegalMove(Move move) const;
 	void playMove(Move move) override;
-	tictactoe();
+	tictactoe(bool isFirstPlayerAI, bool isSecondPlayerAI);
 	void printBoard() override;
 };

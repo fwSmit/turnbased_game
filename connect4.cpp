@@ -2,7 +2,7 @@
 #include "Bot.h"
 #include <sstream>
 
-connect4::connect4(){
+connect4::connect4(bool isFirstPlayerAI, bool isSecondPlayerAI) : Game(isFirstPlayerAI, isSecondPlayerAI){
 	board.setSize(getXSize(), getYSize());
 	//playMove(getMove(0));
 	//playMove(getMove(1));

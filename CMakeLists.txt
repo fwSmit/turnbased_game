@@ -19,5 +19,9 @@ endif()
 
 include_directories(${SFML_INCLUDE_DIR})
 
+include_directories(${CMAKE_SOURCE_DIR})
+
 set (CMAKE_CXX_STANDARD 11)
 add_executable(turnbased_game Game.cpp tictactoe.cpp connect4.cpp main.cpp Bot.cpp)
+
+target_link_libraries(turnbased_game ${SFML_LIBRARIES})
