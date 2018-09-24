@@ -5,9 +5,11 @@ Game::Game(){
 }
 
 void Game::nextPlayer(){
+	//std::cout << "next player" << std::endl;
 	if(player == player_t::player_1){
 		player = player_t::player_2;
-	}else{
+	}
+	else{
 		player = player_t::player_1;
 	}
 }

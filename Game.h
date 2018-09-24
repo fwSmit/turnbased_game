@@ -6,7 +6,7 @@ enum pieceType : char {player1 = 'X', player2 = 'O', empty = ' '};
 
 struct Piece{ 
 	pieceType p = pieceType::empty;
-	char getValue(){ return p; } 
+	char getValue() const { return p; } 
 	Piece(){}
 	Piece(pieceType	val) : p(val) {}
 };
@@ -19,7 +19,7 @@ struct Move{
 struct Board{
 	std::vector<std::vector<Piece>> board;
 	Board(){}
-	virtual char get(int x, int y){ 
+	virtual char get(int x, int y) const{ 
 		return board[x][y].getValue();
 	}
 	void setSize(int xSize, int ySize){
@@ -43,18 +43,24 @@ struct Board{
 		return true;
 	}
 };
+struct Score;
+
 class Game{
 protected:
+	template <typename T>
+		friend  class Bot;
 	Board board;
 	enum player_t : int {player_1, player_2};
 	int player = player_t::player_1;
+	virtual bool isBoardFull(){return board.isFull();}
+	virtual std::vector<Move> getAvailableMoves() const = 0;
+	virtual Score getBoardScore() = 0;
 public:
+	virtual void playMove(Move move) = 0;
 	virtual void nextPlayer();
-	Piece getCurrentPlayerPiece();
-	virtual void makeMove(Move move){};
-	virtual void printBoard(){};
-	virtual std::vector<Move> getAvailableMoves(){ return std::vector<Move>();};
-	virtual bool hasWon(){ return bool();}; // has the current player won?
+	virtual Piece getCurrentPlayerPiece();
+	virtual void printBoard() = 0;
+	virtual bool hasWon() = 0; // has the current player won?
 	Game();
 private:
 };
