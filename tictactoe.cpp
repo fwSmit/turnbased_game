@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-tictactoe::tictactoe(){
+tictactoe::tictactoe(bool _isFirstPlayerAI, bool _isSecondPlayerAI, bool _commandLineMode) : Game(_isFirstPlayerAI, _isSecondPlayerAI, _commandLineMode){
 	board.setSize(3, 3);
 	//board.set(2, 0, pieceType::player1);
 }
@@ -23,27 +23,6 @@ bool tictactoe::hasEnded(){
 	return isBoardFull() || hasWon();
 }
 
-void tictactoe::takeUserInput(){
-	std::cout << "type X_POSITION and press enter" << std::endl;
-		int x, y;
-		std::string input;
-
-		while(1) {
-			std::getline (std::cin, input);
-			std::size_t found = input.find(",");
-			if(found != std::string::npos) {
-				input.replace(found, 1, " ");
-			}
-			std::cout << "input " << input << std::endl;
-			std::stringstream ss(input);
-			if(ss >> x >> y && isLegalMove(Move(x-1, y-1))) {
-				break;
-			}
-			std::cout << "input not correct" << std::endl;
-			std::cin.clear();
-		}
-		playMove(Move(x-1, y-1));
-}
 void tictactoe::playMove(Move move){
 	if(isLegalMove(move)){
 		//std::cout << "Playing move " << move.x << ", " << move.y << std::endl;
@@ -124,4 +103,69 @@ void tictactoe::printBoard(){
 
 Score tictactoe::getBoardScore(){
 	return Score(Result::t_score, 0);
+}
+
+Move tictactoe::getBotMove(){
+	return bot.getBestMove(*this, botDepth);
+}
+
+Move tictactoe::getUserMove(){
+	if(commandLineMode){
+		std::cout << "type X_POSITION, Y_POSITION and press enter" << std::endl;
+		int x, y;
+		std::string input;
+
+		while(1) {
+			std::getline (std::cin, input);
+			std::size_t found = input.find(",");
+			if(found != std::string::npos) {
+				input.replace(found, 1, " ");
+			}
+			std::cout << "input " << input << std::endl;
+			std::stringstream ss(input);
+			if(ss >> x >> y && isLegalMove(Move(x-1, y-1))) {
+				break;
+			}
+			std::cout << "input not correct" << std::endl;
+			std::cin.clear();
+		}
+		return Move(x-1, y-1);
+	}
+	else{
+		std::cout << "This game only works in command line mode" << std::endl;
+		assert(0);
+		return Move(0, 0);
+	}
+}
+
+void tictactoe::startGame(){
+	if(commandLineMode){
+		printBoard();
+		while(!hasEnded()){
+			nextPlayer();
+			Move move;
+			if(isAITurn()){
+				std::cout << "it's player " << getCurrentPlayerPiece().getValue() << "'s turn" << std::endl;
+				std::cout << "(bot's turn)" << std::endl;
+				move = getBotMove();
+				std::cout << "Bot's move: " << move.x+1 << std::endl;
+			}
+			else{
+				std::cout << "it's player " << getCurrentPlayerPiece().getValue() << "'s turn" << std::endl;
+				move = getUserMove();
+			}
+			playMove(move);
+			printBoard();
+			if(hasWon()){
+				std::cout << "Game has ended, player " << getCurrentPlayerPiece().getValue() << " has won" << std::endl;
+			}
+			else{
+				std::cout << "This game has ended in a tie" << std::endl;
+			}
+		}
+	}
+	else{
+		std::cout << "This game only works in command line mode" << std::endl;
+		assert(0);
+	}
 }
