@@ -27,57 +27,14 @@ int main(){
         ////std::cout << timer.restart().asMilliseconds() << std::endl;
     //}
 
-
-
-	bool botBegins = false;
-	currentGame cur = currentGame::g_connect4;
+	currentGame cur = currentGame::g_tictactoe;
 	if(cur == currentGame::g_connect4){
-		connect4 game;
-		Bot<connect4> bot;
-		//game.nextPlayer();
-		//game.playMove(Move(0, 0));
-		//game.playMove(Move(1, 1));
-		//game.playMove(Move(2, 2));
-		bool botTurn = botBegins;
-		game.printBoard();
-		while(!game.hasEnded()){
-			game.nextPlayer();
-			if(botTurn){
-				cout << "it's player " << game.getCurrentPlayerPiece().getValue() << "'s turn" << endl;
-				cout << "(bot's turn)" << endl;
-				Move move = bot.getBestMove(game, 3);
-				cout << "Bot's move: " << move.x+1 << endl;
-				game.playMove(move);
-			}
-			else{
-				cout << "it's player " << game.getCurrentPlayerPiece().getValue() << "'s turn" << endl;
-				game.takeUserInput();
-			}
-			game.printBoard();
-			botTurn = !botTurn;
-		}
+		connect4 game(true, false, true);
+		game.startGame();
 	}
 	if(cur == currentGame::g_tictactoe){
-		tictactoe game;
-		Bot<tictactoe> bot;
-		bool botTurn = botBegins;
-		game.printBoard();
-		while(!game.hasEnded()){
-			game.nextPlayer();
-			if(botTurn){
-				cout << "It's bot's turn" << endl;
-				Move move = bot.getBestMove(game, 5);
-				cout << "Bot's move: " << move.x+1 << ", " << move.y+1 << endl;
-				game.playMove(move);
-			}
-			else{
-				cout << "it's player " << game.getCurrentPlayerPiece().getValue() << "'s turn" << endl;
-				game.takeUserInput();
-			}
-			game.printBoard();
-			botTurn = !botTurn;
-		}
-		
+		tictactoe game(true, false, true);
+		game.startGame();
 	}
 }
 

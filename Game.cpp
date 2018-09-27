@@ -1,7 +1,8 @@
 #include "Game.h"
 #include <iostream>
 
-Game::Game(bool isFirstPlayerAI, bool isSecondPlayerAI){
+Game::Game(bool _isFirstPlayerAI, bool _isSecondPlayerAI, bool _commandLineMode) 
+	: isFirstPlayerAI(_isFirstPlayerAI), isSecondPlayerAI(_isSecondPlayerAI), commandLineMode(_commandLineMode){
 	
 }
 
@@ -23,4 +24,22 @@ Piece Game::getCurrentPlayerPiece(){
 		currPiece = pieceType::player2;
 	}
 	return currPiece;
+}
+
+bool Game::isAITurn(){
+	if(player == player_t::player_1){
+		return isFirstPlayerAI;
+	}
+	else {
+		return isSecondPlayerAI;
+	}
+}
+
+void Game::getMove(){
+	if(isAITurn()){
+		playMove(getBotMove());
+	}
+	else{
+		playMove(getUserMove());
+	}
 }

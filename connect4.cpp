@@ -2,7 +2,7 @@
 #include "Bot.h"
 #include <sstream>
 
-connect4::connect4(bool isFirstPlayerAI, bool isSecondPlayerAI) : Game(isFirstPlayerAI, isSecondPlayerAI){
+connect4::connect4(bool _isFirstPlayerAI, bool _isSecondPlayerAI, bool _commandLineMode) : Game(_isFirstPlayerAI, _isSecondPlayerAI, _commandLineMode){
 	board.setSize(getXSize(), getYSize());
 	//playMove(getMove(0));
 	//playMove(getMove(1));
@@ -39,28 +39,6 @@ void connect4::printBoard(){
 		std::cout<< y+1 << "   ";
 	}
 	std::cout << std::endl;
-}
-
-void connect4::takeUserInput(){
-	std::cout << "type X_POSITION and press enter" << std::endl;
-		int x;
-		std::string input;
-
-		while(1) {
-			std::getline (std::cin, input);
-			std::size_t found = input.find(",");
-			if(found != std::string::npos) {
-				input.replace(found, 1, " ");
-			}
-			//std::cout << "input " << input << std::endl;
-			std::stringstream ss(input);
-			if(ss >> x && isLegalMove(getMove(x-1))) {
-				break;
-			}
-			std::cout << "input not correct" << std::endl;
-			std::cin.clear();
-		}
-		playMove(getMove(x-1));
 }
 
 std::vector<Move> connect4::getAvailableMoves() const{
@@ -204,4 +182,69 @@ Score connect4::getBoardScore(){
 	}
 	//std::cout << "score is " << score << std::endl;
 	return Score(Result::t_score, score);
+}
+
+Move connect4::getBotMove(){
+	return bot.getBestMove(*this, botDepth);
+}
+
+Move connect4::getUserMove(){
+	if(commandLineMode){
+		std::cout << "type X_POSITION and press enter" << std::endl;
+		int x;
+		std::string input;
+
+		while(1) {
+			std::getline (std::cin, input);
+			std::size_t found = input.find(",");
+			if(found != std::string::npos) {
+				input.replace(found, 1, " ");
+			}
+			//std::cout << "input " << input << std::endl;
+			std::stringstream ss(input);
+			if(ss >> x && isLegalMove(getMove(x-1))) {
+				break;
+			}
+			std::cout << "input not correct" << std::endl;
+			std::cin.clear();
+		}
+		return getMove(x-1);
+	}
+	else{
+		std::cout << "This game only works in command line mode" << std::endl;
+		assert(0);
+		return Move(0, 0);
+	}
+}
+
+void connect4::startGame(){
+	if(commandLineMode){
+		printBoard();
+		while(!hasEnded()){
+			nextPlayer();
+			Move move;
+			if(isAITurn()){
+				std::cout << "it's player " << getCurrentPlayerPiece().getValue() << "'s turn" << std::endl;
+				std::cout << "(bot's turn)" << std::endl;
+				move = getBotMove();
+				std::cout << "Bot's move: " << move.x+1 << std::endl;
+			}
+			else{
+				std::cout << "it's player " << getCurrentPlayerPiece().getValue() << "'s turn" << std::endl;
+				move = getUserMove();
+			}
+			playMove(move);
+			printBoard();
+			if(hasWon()){
+				std::cout << "Game has ended, player " << getCurrentPlayerPiece().getValue() << " has won" << std::endl;
+			}
+			else{
+				std::cout << "This game has ended in a tie" << std::endl;
+			}
+		}
+	}
+	else{
+		std::cout << "This game only works in command line mode" << std::endl;
+		assert(0);
+	}
 }

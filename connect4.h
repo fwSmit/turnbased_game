@@ -1,9 +1,12 @@
 #pragma once
 #include "Game.h"
+#include "Bot.h"
 
 class connect4 : public Game{
 	template <typename T>
 		friend  class Bot;
+	Bot <connect4> bot;
+	const unsigned int botDepth = 3;
 	const static size_t XSize = 7;
 	const static size_t YSize = 6;
 	constexpr int getXSize() const {return XSize;}
@@ -13,10 +16,13 @@ class connect4 : public Game{
 	bool isLegalMove(Move move) const;
 	std::vector<Move> getAvailableMoves() const override;
 	Score getBoardScore() override;
+	Move getBotMove() override;
+	Move getUserMove() override;
 public:
+	void startGame() override;
 	void playMove(Move move) override;
 	bool hasEnded();
-	connect4(bool isFirstPlayerAI, bool isSecondPlayerAI);
+	connect4(bool _isFirstPlayerAI, bool _isSecondPlayerAI, bool _commandLineMode);
 	void printBoard() override;
-	void takeUserInput();
+	//void takeUserInput();
 };
