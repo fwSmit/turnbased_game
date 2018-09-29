@@ -34,16 +34,6 @@ void tictactoe::playMove(Move move){
 	}
 }
 
-Piece tictactoe::getCurrentPlayerPiece(){
-	Piece currPiece;
-	if(player == player_t::player_1){
-		currPiece = pieceType::player1;
-	}else{
-		currPiece = pieceType::player2;
-	}
-	return currPiece;
-}
-
 bool tictactoe::hasWon() {
     int count_cross_forward = 0; /*       "/"     (top right to left bottom)*/
     int count_cross_backward = 0; /*      "\"     (top left to right bottom)*/

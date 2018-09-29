@@ -18,7 +18,6 @@ class tictactoe : public Game{
 	Move getUserMove() override; // asks the user which move they wanna play user input 
 public:
 	void startGame() override; // will loop if it's in command line mode, if not the function loop will need to be called for the game to continue
-	Piece getCurrentPlayerPiece() override;
 	bool hasEnded();
 	bool isLegalMove(Move move) const;
 	void playMove(Move move) override;

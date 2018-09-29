@@ -7,12 +7,13 @@
 //#include <SFML/Config.hpp>
 #include "tictactoe.h"
 #include "connect4.h"
+#include "Reversi.h"
 #include "Bot.h"
 
 
 using namespace std;
 
-enum currentGame {g_connect4, g_tictactoe};
+enum currentGame {g_connect4, g_tictactoe, g_reversi};
 
 
 int main(){
@@ -27,13 +28,18 @@ int main(){
         ////std::cout << timer.restart().asMilliseconds() << std::endl;
     //}
 
-	currentGame cur = currentGame::g_tictactoe;
+	currentGame cur = currentGame::g_reversi;
+	//currentGame cur = currentGame::g_connect4;
 	if(cur == currentGame::g_connect4){
 		connect4 game(true, false, true);
 		game.startGame();
 	}
 	if(cur == currentGame::g_tictactoe){
 		tictactoe game(true, false, true);
+		game.startGame();
+	}
+	if(cur == currentGame::g_reversi){
+		Reversi game(false, false, true);
 		game.startGame();
 	}
 }

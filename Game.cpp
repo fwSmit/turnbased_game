@@ -16,12 +16,22 @@ void Game::nextPlayer(){
 	}
 }
 
-Piece Game::getCurrentPlayerPiece(){
+Piece Game::getCurrentPlayerPiece() const {
 	Piece currPiece;
 	if(player == player_t::player_1){
 		currPiece = pieceType::player1;
 	}else{
 		currPiece = pieceType::player2;
+	}
+	return currPiece;
+}
+
+Piece Game::getOtherPlayerPiece() const {
+	Piece currPiece;
+	if(player == player_t::player_1){
+		currPiece = pieceType::player2;
+	}else{
+		currPiece = pieceType::player1;
 	}
 	return currPiece;
 }
@@ -42,4 +52,8 @@ void Game::getMove(){
 	else{
 		playMove(getUserMove());
 	}
+}
+
+void Game::printMove(Move move) const {
+	std::cout << move.x + 1 << ", " << move.y + 1 << std::endl;
 }

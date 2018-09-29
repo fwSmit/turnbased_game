@@ -35,7 +35,7 @@ void connect4::printBoard(){
 		std::cout << std::endl << spacing << horizontalLine << std::endl;
 	}
 	std::cout << spacing << "  ";
-	for (int y = 0; y <= getYSize(); y++) {
+	for (int y = 0; y < getXSize(); y++) {
 		std::cout<< y+1 << "   ";
 	}
 	std::cout << std::endl;
