@@ -26,20 +26,26 @@ void printScore(Score score);
 
 template <class T>
 class Bot{
+	int number_evaluations = 0;
 	Score getScore(T game, Move move, int depth, const int maxDepth){
 		//std::cout << "depth is " << depth << std::endl;
 		game.playMove(move);
 
 		if(game.hasWon()){
 			//std::cout << "one way of winning/losing" << std::endl;
+			number_evaluations++;
 			return Score(Result::win);
 		}
 
 		if(game.isBoardFull()){ // && !game.hasWon()
+			number_evaluations++;
 			return Score(Result::draw);
 		}
 
-		if(depth == maxDepth) {return game.getBoardScore();}
+		if(depth == maxDepth) {
+			number_evaluations++;
+			return game.getBoardScore();
+		}
 		auto possibleMoves = game.getAvailableMoves();
 		Score bestScore = Score(Result::win);
 		//std::cout << "possible moves in getScore: " << possibleMoves.size() << std::endl;
@@ -48,6 +54,7 @@ class Bot{
 			Score score = -getScore(game, possibleMoves[i], depth+1, maxDepth);
 			bestScore = std::min(score, bestScore);
 		}
+		number_evaluations++;
 		return bestScore;
 	}
 public:
@@ -83,8 +90,10 @@ public:
 			}
 		}
 		if(bestMoves.size() == 0) { std::cout << "error in getBestMove() " << std::endl;}
-		std::cout << "best moves size = " << bestMoves.size() << std::endl;
+		//std::cout << "best moves size = " << bestMoves.size() << std::endl;
 		size_t random_element = rand() % bestMoves.size();
+		std::cout << "Number of evalutaions: " << number_evaluations << std::endl;
+		number_evaluations = 0;
 		return bestMoves[random_element];
 	};
 };

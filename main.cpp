@@ -28,7 +28,8 @@ int main(){
         ////std::cout << timer.restart().asMilliseconds() << std::endl;
     //}
 
-	currentGame cur = currentGame::g_reversi;
+	currentGame cur = currentGame::g_tictactoe;
+	//currentGame cur = currentGame::g_reversi;
 	//currentGame cur = currentGame::g_connect4;
 	if(cur == currentGame::g_connect4){
 		connect4 game(true, false, true);

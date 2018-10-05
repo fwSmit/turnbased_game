@@ -56,9 +56,9 @@ bool tictactoe::hasWon() {
             count_cross_forward++;
         }
 
-        if (count_vertical == 3 || count_horizontal == 3 ) return true;
+        if (count_vertical == 3 || count_horizontal == 3 ) { return true; }
     }
-    if(count_cross_backward == 3 || count_cross_forward == 3) return true;
+    if(count_cross_backward == 3 || count_cross_forward == 3) { return true; }
     return false;
 
 }
@@ -138,7 +138,8 @@ void tictactoe::startGame(){
 				std::cout << "it's player " << getCurrentPlayerPiece().getValue() << "'s turn" << std::endl;
 				std::cout << "(bot's turn)" << std::endl;
 				move = getBotMove();
-				std::cout << "Bot's move: " << move.x+1 << std::endl;
+				std::cout << "Bot's move: ";
+				printMove(move);
 			}
 			else{
 				std::cout << "it's player " << getCurrentPlayerPiece().getValue() << "'s turn" << std::endl;

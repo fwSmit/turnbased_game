@@ -6,7 +6,7 @@ class tictactoe : public Game{
 	template <typename T>
 		friend  class Bot;
 	Bot <tictactoe> bot;
-	const unsigned int botDepth = 5;
+	const unsigned int botDepth = 2;
 	bool hasWon() override; // current player has won 
 	std::vector<Move> getAvailableMoves() const override;
 	const static size_t XSize = 3;
