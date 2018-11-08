@@ -21,8 +21,16 @@ bool operator==(const Score& lhs, const Score& rhs){
 	return lhs.result == rhs.result && lhs.score == rhs.score;
 }
 
+// yet has to take depth into account
 bool operator>(const Score& lhs, const Score& rhs){
-	assert(lhs.result != Result::empty_score && rhs.result != Result::empty_score); // can't compare empty objects
+	if (rhs.result == Result::empty_score) {
+		return true;
+	}
+	if (lhs.result == Result::empty_score) {
+		return false;
+	}
+	assert(lhs.result != Result::empty_score && rhs.result != Result::empty_score);
+
 	if(rhs.result == Result::win){
 		return false;
 	}

@@ -161,7 +161,7 @@ bool connect4::hasWon()
 	return won;
 }
 
-Score connect4::getBoardScore(){ 
+Score connect4::getBoardScore(unsigned int depth){ 
 	auto availableMoves = getAvailableMoves();
 	int score = 0;
 	for(Move m: availableMoves){

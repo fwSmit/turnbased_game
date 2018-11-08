@@ -91,8 +91,8 @@ void tictactoe::printBoard(){
 	}
 }
 
-Score tictactoe::getBoardScore(){
-	return Score(Result::t_score, 0);
+Score tictactoe::getBoardScore(unsigned int depth){
+	return Score(Result::t_score, depth, 0);
 }
 
 Move tictactoe::getBotMove(){

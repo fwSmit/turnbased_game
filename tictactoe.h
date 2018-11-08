@@ -13,7 +13,7 @@ class tictactoe : public Game{
 	const static size_t YSize = 3;
 	constexpr int getXSize() const {return XSize;}
 	constexpr int getYSize() const {return YSize;}
-	Score getBoardScore() override;
+	Score getBoardScore(unsigned int depth) override;
 	Move getBotMove() override;// fetches the best move from the bot
 	Move getUserMove() override; // asks the user which move they wanna play user input 
 public:

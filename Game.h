@@ -65,7 +65,7 @@ protected:
 	bool commandLineMode;
 	virtual bool isBoardFull(){return board.isFull();}
 	virtual std::vector<Move> getAvailableMoves() const = 0;
-	virtual Score getBoardScore() = 0;
+	virtual Score getBoardScore(unsigned int depth) = 0;
 	bool isAITurn();
 	void getMove(); // either takes input from the user or makes the bot decide for the best move
 					// depending on whose turn it is

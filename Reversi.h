@@ -14,7 +14,7 @@ class Reversi : public Game{
 	bool isLegalMove(Move move) const;
 	bool isInBounds(Move move) const;
 	std::vector<Move> getAvailableMoves() const override;
-	Score getBoardScore() override;
+	Score getBoardScore(unsigned int depth) override;
 	Move getBotMove() override;
 	Move getUserMove() override;
 	void flipPiece(Move position);

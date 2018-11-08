@@ -193,7 +193,7 @@ int Reversi::getPlayerScore(Piece playerPiece) const {
 	return score;
 }
 
-Score Reversi::getBoardScore(){ // EDIT
+Score Reversi::getBoardScore(unsigned int depth){ // EDIT
 	auto availableMoves = getAvailableMoves();
 	int score = 0;
 	for(Move m: availableMoves){

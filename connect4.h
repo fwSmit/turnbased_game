@@ -15,7 +15,7 @@ class connect4 : public Game{
 	bool hasWon() override; // current player has won 
 	bool isLegalMove(Move move) const;
 	std::vector<Move> getAvailableMoves() const override;
-	Score getBoardScore() override;
+	Score getBoardScore(unsigned int depth) override;
 	Move getBotMove() override;
 	Move getUserMove() override;
 public:
