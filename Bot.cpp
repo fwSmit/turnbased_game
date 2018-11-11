@@ -83,15 +83,19 @@ bool operator>=(const Score& lhs, const Score& rhs){
 	return !(lhs > rhs);
 }
 
+void printMove(Move move){
+	std::cout << move.x << ", " << move.y << std::endl;
+}
 void printScore(Score score){
-	if(score.result == Result::t_score){
-		std::cout << "score is " << score.score << std::endl;
-	}
-	else{
-		if(score.result == Result::win){
-			std::cout << "winning score" << std::endl;
-		}else if(score.result == Result::loss) {
-			std::cout << "losing score" << std::endl;
-		}
-	}
+	std::cout << "score is " << score.score << std::endl;
+	//if(score.result == Result::t_score){
+		//std::cout << "score is " << score.score << std::endl;
+	//}
+	//else{
+		//if(score.result == Result::win){
+			//std::cout << "winning score" << std::endl;
+		//}else if(score.result == Result::loss) {
+			//std::cout << "losing score" << std::endl;
+		//}
+	//}
 }

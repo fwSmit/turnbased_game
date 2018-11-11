@@ -25,3 +25,13 @@ set (CMAKE_CXX_STANDARD 11)
 add_executable(turnbased_game Game.cpp tictactoe.cpp connect4.cpp main.cpp Bot.cpp Reversi.cpp)
 
 target_link_libraries(turnbased_game ${SFML_LIBRARIES})
+
+# Locate GTest
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+add_executable(runTests tests.cpp)
+target_link_libraries(runTests ${GTEST_LIBRARIES} pthread)
+
+ENABLE_TESTING()
+ADD_TEST(turnbased_game runTests)

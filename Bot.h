@@ -28,6 +28,8 @@ bool operator>=(const Score& lhs, const Score& rhs);
 
 void printScore(Score score);
 
+void printMove(Move move);
+
 template <class T>
 class Bot{
 	int number_evaluations = 0;
@@ -78,7 +80,7 @@ class Bot{
 				value = std::max(score, value);
 				alpha = std::max(alpha, score);
 				if(alpha >= beta){
-					std::cout << "Breaking" << std::endl;
+					//std::cout << "Breaking" << std::endl;
 					break;
 				}
 			}
@@ -96,7 +98,7 @@ class Bot{
 				value = std::min(score, value);
 				beta = std::min(beta, score);
 				if(alpha >= beta){
-					std::cout << "Breaking" << std::endl;
+					//std::cout << "Breaking" << std::endl;
 					break;
 				}
 			}
@@ -203,6 +205,10 @@ public:
 			}
 		}
 		if(bestMoves.size() == 0) { std::cout << "error in getBestMove() " << std::endl;}
+		std::cout << "Best moves are:" << std::endl;
+		for(int i = 0; i< bestMoves.size(); i++){
+			printMove(bestMoves[i]);
+		}
 		//std::cout << "best moves size = " << bestMoves.size() << std::endl;
 		size_t random_element = rand() % bestMoves.size();
 		std::cout << "Number of evalutaions: " << number_evaluations << std::endl;
