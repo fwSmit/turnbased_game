@@ -146,6 +146,7 @@ void tictactoe::startGame(){
 				move = getUserMove();
 			}
 			playMove(move);
+			std::cout << "Possible move size " << getAvailableMoves().size() << std::endl;
 			printBoard();
 			if(hasWon()){
 				std::cout << "Game has ended, player " << getCurrentPlayerPiece().getValue() << " has won" << std::endl;

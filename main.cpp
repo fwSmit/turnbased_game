@@ -36,7 +36,15 @@ int main(){
 		game.startGame();
 	}
 	if(cur == currentGame::g_tictactoe){
+		// AI begins
 		tictactoe game(true, false, true);
+		// player begins
+		//tictactoe game(false, true, true);
+		game.playMove(Move(2, 2));
+		game.nextPlayer();
+		game.playMove(Move(1, 1));
+		game.nextPlayer();
+		game.playMove(Move(0, 0));
 		game.startGame();
 	}
 	if(cur == currentGame::g_reversi){

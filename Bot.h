@@ -5,14 +5,13 @@
 #include <limits>
 #include <assert.h>
 
-enum Result{win, loss, draw, empty_score, t_score /*some score is calculated*/};
+enum Result{positiveInf, negativeInf, win, loss, empty_score, t_score /*some score is calculated*/};
 
 struct Score{
 	Result result;
 	float score = 0;
 	unsigned int depth;
-	Score(Result _result, unsigned int depth, float _score = 0) : result(_result), score(_score){}
-	Score(float _score) : score(_score){}
+	Score(Result _result, float _score = 0, unsigned int _depth = 0) : result(_result), score(_score), depth(_depth){}
 };
 
 Score operator-(const Score& input);
@@ -35,23 +34,28 @@ class Bot{
 	int number_evaluations = 0;
 	Score negativeInf;
 	Score positiveInf;
-	float aLot = 10000.f;
 	// depth starts at 0 and ends when it's equal to maxDepth (0 <= depth <= maxDepth)
 	// maxDepth is the maximum number of nodes the algorithm may travel down. If maxDepth is zero the algoritm will immediately return a value
 	Score getScore(T game, Move move, Score alpha, Score beta, unsigned int depth, const unsigned int maxDepth){
 		bool isMaximizingPlayer = (depth % 2) == 0;
 		//std::cout << "depth is " << depth << std::endl;
 		game.playMove(move);
+		
 		if(game.hasWon()){
+			//std::cout << "Found winning move" << std::endl;
+			game.nextPlayer();
+			if(game.hasWon()){
+				std::cout << "Wrong player's turn" << std::endl;
+			}
 			number_evaluations++;
+			//game.printBoard();
 			if(isMaximizingPlayer){
 				//std::cout << "winning move of maximizing player" << std::endl;
-				//return Score(Result::win, depth);
-				return Score(aLot);
+				return Score(Result::win, 0, depth);
 			}
 			else{
-				//return Score(Result::loss, depth);
-				return Score(-aLot);
+				return Score(Result::loss, 0, depth);
+				//return Score(Result::t_score, -aLot);
 			}
 			////std::cout << "one way of winning/losing" << std::endl;
 			//number_evaluations++;
@@ -60,17 +64,19 @@ class Bot{
 
 		if(game.isBoardFull()){ // && !game.hasWon()
 			number_evaluations++;
-			//return Score(Result::draw, depth);
-			return Score(0);
+			game.printBoard();
+			return Score(Result::t_score, 0, depth);
 		}
 
 		if(depth == maxDepth) {
 			number_evaluations++;
 			//return game.getBoardScore(depth);
-			return Score(0);
+			std::cout << "Max depth reached" << std::endl;
+			return Score(Result::t_score, 0);
 		}
 		if (isMaximizingPlayer) {
 			auto possibleMoves = game.getAvailableMoves();
+			std::cout << "Possible moves " << possibleMoves.size() << std::endl;
 			//Score value = Score(Result::empty_score, depth);
 			Score value = negativeInf;
 			//std::cout << "possible moves in getScore: " << possibleMoves.size() << std::endl;
@@ -81,7 +87,7 @@ class Bot{
 				alpha = std::max(alpha, score);
 				if(alpha >= beta){
 					//std::cout << "Breaking" << std::endl;
-					break;
+					//break;
 				}
 			}
 			number_evaluations++;
@@ -99,7 +105,7 @@ class Bot{
 				beta = std::min(beta, score);
 				if(alpha >= beta){
 					//std::cout << "Breaking" << std::endl;
-					break;
+					//break;
 				}
 			}
 			number_evaluations++;
@@ -171,12 +177,12 @@ class Bot{
 		
 	//}
 public:
-	Bot() : negativeInf(-std::numeric_limits<float>::infinity()), positiveInf(std::numeric_limits<float>::infinity()) {
+	Bot() : negativeInf(Result::negativeInf), positiveInf(Result::positiveInf) {
 		std::srand(time(nullptr)); //set the seed to the current time
 	}
 
 	
-	Move getBestMove(const T game, int maxDepth){
+	std::vector<Move> getAllBestMoves(const T game, int maxDepth){
 		auto possibleMoves = game.getAvailableMoves();
 		if(possibleMoves.size() == 0){
 			std::cout << "no possble moves provided" << std::endl;
@@ -188,23 +194,30 @@ public:
 		for(int i = 0; i < possibleMoves.size(); i++){
 			Score score = getScore(game, possibleMoves[i], negativeInf /*alpha*/, positiveInf /*beta*/, 0, maxDepth);
 			//Score score = getScore(game, possibleMoves[i], Score(Result::empty_score, 0) /*alpha*/, Score(Result::win, 0) /*beta*/, 0, maxDepth);
-			std::cout << "Move : " << possibleMoves[i].x+1 << "	";
+			//std::cout << "Move : " << possibleMoves[i].x+1 << "	";
+			printMove(possibleMoves[i]);
 			printScore(score);
-			if(score.result == Result::win){
-				std::cout << "found winning move" << std::endl;
-				return possibleMoves[i];
-			}
+			//if(score.result == Result::win){
+				//std::cout << "found winning move" << std::endl;
+				//return possibleMoves[i];
+			//}
 			if(score == bestScore){
 				bestMoves.push_back(possibleMoves[i]);
 			}
 			if(score > bestScore){
-				//std::cout << "found better score, namely: " << score.score << std::endl;
+				//std::cout << "found better score, namely: ";
+				printScore(score);
 				bestScore = score;
 				bestMoves.clear();
 				bestMoves.push_back(possibleMoves[i]);
 			}
 		}
 		if(bestMoves.size() == 0) { std::cout << "error in getBestMove() " << std::endl;}
+		return bestMoves;
+	};
+	
+	Move getBestMove(const T game, int maxDepth){
+		std::vector<Move> bestMoves = getAllBestMoves(game, maxDepth);
 		std::cout << "Best moves are:" << std::endl;
 		for(int i = 0; i< bestMoves.size(); i++){
 			printMove(bestMoves[i]);
@@ -214,6 +227,7 @@ public:
 		std::cout << "Number of evalutaions: " << number_evaluations << std::endl;
 		number_evaluations = 0;
 		return bestMoves[random_element];
-	};
+		
+	}
 };
 

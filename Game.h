@@ -74,7 +74,7 @@ protected:
 	void printMove(Move move) const;
 public:
 	/* maybe this function could be implemented in Game */
-	virtual void startGame() = 0; // will loop if it's in command line mode, if not the function loop will need to be called for the game to continue
+	virtual void startGame() = 0; // will loop if it's in command line mode, if not the draw loop will need to be called for the game to continue
 	
 	virtual void playMove(Move move) = 0;
 	virtual void nextPlayer();
