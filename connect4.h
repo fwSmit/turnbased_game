@@ -6,7 +6,7 @@ class connect4 : public Game{
 	template <typename T>
 		friend  class Bot;
 	Bot <connect4> bot;
-	const unsigned int botDepth = 3;
+	const unsigned int botDepth = 5;
 	const static size_t XSize = 7;
 	const static size_t YSize = 6;
 	constexpr int getXSize() const {return XSize;}
