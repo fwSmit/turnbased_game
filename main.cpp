@@ -45,6 +45,8 @@ int main(){
 		game.playMove(Move(1, 1));
 		game.nextPlayer();
 		game.playMove(Move(0, 0));
+		//tictactoe game(true, false, true);
+		// player begins
 		game.startGame();
 	}
 	if(cur == currentGame::g_reversi){
