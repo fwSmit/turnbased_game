@@ -40,14 +40,27 @@ int main(){
 		tictactoe game(true, false, true);
 		// player begins
 		//tictactoe game(false, true, true);
-		game.playMove(Move(2, 2));
-		game.nextPlayer();
-		game.playMove(Move(1, 1));
-		game.nextPlayer();
-		game.playMove(Move(0, 0));
+		//game.playMove(Move(2, 2));
+		//game.nextPlayer();
+		//game.playMove(Move(1, 1));
+		////game.playMove(Move(1, 2));
+		//game.nextPlayer();
+		//game.playMove(Move(1-1, 1));
+		//game.playMove(Move(1,0));
+		//game.playMove(Move(1-1, 2));
+		//game.playMove(Move(0, 0));
 		//tictactoe game(true, false, true);
 		// player begins
+		game.playMove(Move(1, 1));
+		game.playMove(Move(0, 1));
+		game.playMove(Move(2, 2));
+		game.nextPlayer();
+		game.playMove(Move(0, 0));
+		game.playMove(Move(0, 2));
+		game.playMove(Move(1, 2));
+		game.nextPlayer();
 		game.startGame();
+		//game.testGame();
 	}
 	if(cur == currentGame::g_reversi){
 		Reversi game(false, false, true);

@@ -161,3 +161,9 @@ void tictactoe::startGame(){
 		assert(0);
 	}
 }
+
+void tictactoe::testGame(){
+	printBoard();
+	std::cout << "Current player: " << getCurrentPlayerPiece().getValue() << std::endl; 
+	bot.testBot(*this, botDepth);
+}

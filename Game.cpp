@@ -54,6 +54,6 @@ void Game::getMove(){
 	}
 }
 
-void Game::printMove(Move move) const {
-	std::cout << move.x + 1 << ", " << move.y + 1 << std::endl;
-}
+//void Game::printMove(Move move) const {
+	//std::cout << move.x + 1 << ", " << move.y + 1 << std::endl;
+//}

@@ -31,6 +31,19 @@ TEST(scoreComparisonTest, winLossScore){
 	testOrder(order);
 }
 
+TEST(scoreComparisonTest, depthTest){
+	Score win(Result::win, 0);
+	Score winMoreDepth(Result::win, 0);
+	winMoreDepth.depth = 10;
+	Score loss(Result::loss, 0);
+	Score lossMoreDepth(Result::loss, 0);
+	lossMoreDepth.depth = 10;
+	Score positiveScore(Result::t_score, 12);
+	Score neutralScore(Result::t_score, 0);
+	Score negativeScore(Result::t_score, -12);
+	std::vector<Score> order{loss, lossMoreDepth, negativeScore, neutralScore, positiveScore, winMoreDepth, win};
+	testOrder(order);
+}
 TEST(botTest, onePossible){
 	tictactoe game(true, false, true);
 	game.playMove(Move(2, 2));

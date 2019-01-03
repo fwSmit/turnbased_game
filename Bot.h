@@ -14,8 +14,7 @@ struct Score{
 	Score(Result _result, float _score = 0, unsigned int _depth = 0) : result(_result), score(_score), depth(_depth){}
 };
 
-Score operator-(const Score& input);
-
+Score operator-(const Score& input); 
 
 bool operator==(const Score& lhs, const Score& rhs);
 
@@ -41,14 +40,16 @@ class Bot{
 		//std::cout << "depth is " << depth << std::endl;
 		game.playMove(move);
 		
+		//game.printBoard();
+
 		if(game.hasWon()){
-			//std::cout << "Found winning move" << std::endl;
+			std::cout << "Found winning move" << std::endl;
+			game.printBoard();
 			game.nextPlayer();
 			if(game.hasWon()){
 				std::cout << "Wrong player's turn" << std::endl;
 			}
 			number_evaluations++;
-			//game.printBoard();
 			if(isMaximizingPlayer){
 				//std::cout << "winning move of maximizing player" << std::endl;
 				return Score(Result::win, 0, depth);
@@ -64,19 +65,21 @@ class Bot{
 
 		if(game.isBoardFull()){ // && !game.hasWon()
 			number_evaluations++;
-			game.printBoard();
+			//game.printBoard();
 			return Score(Result::t_score, 0, depth);
 		}
 
 		if(depth == maxDepth) {
 			number_evaluations++;
+			//game.printBoard();
 			//return game.getBoardScore(depth);
-			std::cout << "Max depth reached" << std::endl;
+			//std::cout << "Max depth reached" << std::endl;
 			return Score(Result::t_score, 0);
 		}
 		if (isMaximizingPlayer) {
 			auto possibleMoves = game.getAvailableMoves();
-			std::cout << "Possible moves " << possibleMoves.size() << std::endl;
+			//possibleMoves.resize(2);
+			//std::cout << "Possible moves " << possibleMoves.size() << std::endl;
 			//Score value = Score(Result::empty_score, depth);
 			Score value = negativeInf;
 			//std::cout << "possible moves in getScore: " << possibleMoves.size() << std::endl;
@@ -95,6 +98,7 @@ class Bot{
 		}
 		else {
 			auto possibleMoves = game.getAvailableMoves();
+			//possibleMoves.resize(2);
 			//Score value = Score(Result::win, depth);
 			Score value = positiveInf;
 			//std::cout << "possible moves in getScore: " << possibleMoves.size() << std::endl;
@@ -188,6 +192,10 @@ public:
 			std::cout << "no possble moves provided" << std::endl;
 		}
 		std::cout << "Possible move size " << possibleMoves.size() << std::endl;
+		//std::cout << "Possible moves are: " << std::endl;
+		//for(auto i : possibleMoves){
+			//printMove(i);
+		//}
 		//Score bestScore = Score(Result::loss, 0);
 		Score bestScore = negativeInf;
 		std::vector<Move> bestMoves;
@@ -228,6 +236,17 @@ public:
 		number_evaluations = 0;
 		return bestMoves[random_element];
 		
+	}
+
+	void testBot(T game, int maxDepth){
+		Move testMove = Move(2,1);
+		std::cout << "testing move ";
+		printMove(testMove);
+		Score score = getScore(game, testMove, negativeInf /*alpha*/, positiveInf /*beta*/, 0, maxDepth);
+		//game.playMove(testMove);
+		//game.printBoard();
+		std::cout << "Score is ";
+		printScore(score);
 	}
 };
 

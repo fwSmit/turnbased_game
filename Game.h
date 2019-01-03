@@ -71,7 +71,7 @@ protected:
 					// depending on whose turn it is
 	virtual Move getBotMove() = 0; // fetches the best move from the bot
 	virtual Move getUserMove() = 0;	// asks the user which move they wanna play user input 
-	void printMove(Move move) const;
+	//void printMove(Move move) const;
 public:
 	/* maybe this function could be implemented in Game */
 	virtual void startGame() = 0; // will loop if it's in command line mode, if not the draw loop will need to be called for the game to continue

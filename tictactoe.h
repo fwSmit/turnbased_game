@@ -23,4 +23,5 @@ public:
 	void playMove(Move move) override;
 	tictactoe(bool _isFirstPlayerAI, bool _isSecondPlayerAI, bool _commandLineMode);
 	void printBoard() override;
+	void testGame();
 };

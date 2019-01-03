@@ -1,6 +1,7 @@
 #include "Bot.h"
 
 
+
 //Score operator-(const Score& input){
 	//Score _score = input;
 	//if(_score.result == Result::win){
@@ -28,7 +29,7 @@ bool operator==(const Score& lhs, const Score& rhs){
 	//return lhs.score > rhs.score;
 //}
 
-// yet has to take depth into account
+// yet has to completely take depth into account
 bool operator>(const Score& lhs, const Score& rhs){
 	//if (rhs.result == Result::empty_score) {
 		//return true;
@@ -51,12 +52,18 @@ bool operator>(const Score& lhs, const Score& rhs){
 		return true;
 	}
 
+	if(rhs.result == Result::win && lhs.result == Result::win){
+		return lhs.depth < rhs.depth;
+	}
 	if(rhs.result == Result::win){
 		return false;
 	}
 	if(lhs.result == Result::win){ 
 		 return true;
-	 }
+	}
+	if(rhs.result == Result::loss && lhs.result == Result::loss){
+		return lhs.depth > rhs.depth;
+	}
 	if(lhs.result == Result::loss) {
 		return false;
 	}
@@ -67,12 +74,6 @@ bool operator>(const Score& lhs, const Score& rhs){
 		 if(rhs.result == Result::t_score){
 			 return lhs.score > rhs.score;
 		 }
-		 //if(lhs.score > 0){
-			 //return true;
-		 //}
-		 //else{
-			 //return false;
-		 //}
 	}
 	assert(0); // shouldnt reach this point
 	return false;
