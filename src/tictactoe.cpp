@@ -1,19 +1,18 @@
 #include "tictactoe.h"
 #include "Bot.h"
-#include <iostream>
 #include <string>
 #include <sstream>
+#include <cassert>
 
 tictactoe::tictactoe(bool _isFirstPlayerAI, bool _isSecondPlayerAI, bool _commandLineMode) : Game(_isFirstPlayerAI, _isSecondPlayerAI, _commandLineMode){
-	board.setSize(3, 3);
-	//board.set(2, 0, pieceType::player1);
+	state.board.setSize(XSize, YSize);
 }
 
-bool tictactoe::isLegalMove(Move move) const{
-	if(move.x < 0 || move.y < 0 || move.x >= getXSize() || move.y >= getYSize()){ //check if move is in bounds
+bool tictactoe::isLegalMove(Move2D move) const{
+	if(move.x >= getXSize() || move.y >= getYSize()){ //check if move is in bounds
 		return false;
 	}
-	if(board.get(move.x, move.y) != pieceType::empty){ // check if place is occupied
+	if(state.board.get(move.x, move.y) != pieceType::empty){ // check if place is occupied
 		return false;
 	}
 	return true;
@@ -23,10 +22,10 @@ bool tictactoe::hasEnded(){
 	return isBoardFull() || hasWon();
 }
 
-void tictactoe::playMove(Move move){
+void tictactoe::playMove(Move2D move){
 	if(isLegalMove(move)){
 		//std::cout << "Playing move " << move.x << ", " << move.y << std::endl;
-		board.set(move.x, move.y, getCurrentPlayerPiece());
+		state.board.set(move.x, move.y, getCurrentPlayerPiece());
 		//std::cout << "Has current player won? " << std::boolalpha << hasWon() << std::endl;
 	}
 	else{ // illegal move
@@ -41,18 +40,18 @@ bool tictactoe::hasWon() {
 		int count_vertical = 0;
 		int count_horizontal = 0;
         for(int j = 0; j < 3; j++) {
-            if(board.get(i, j) == getCurrentPlayerPiece().getValue()) {
+            if(state.board.get(i, j) == getCurrentPlayerPiece().getValue()) {
                 count_vertical++;
             }
-            if(board.get(j, i)  == getCurrentPlayerPiece().getValue()) {
+            if(state.board.get(j, i)  == getCurrentPlayerPiece().getValue()) {
                 count_horizontal++;
             }
         }
 
-        if(board.get(i, i) == getCurrentPlayerPiece().getValue()) {
+        if(state.board.get(i, i) == getCurrentPlayerPiece().getValue()) {
             count_cross_backward++;
         }
-        if(board.get(2 - i, i) == getCurrentPlayerPiece().getValue()) {
+        if(state.board.get(2 - i, i) == getCurrentPlayerPiece().getValue()) {
             count_cross_forward++;
         }
 
@@ -63,11 +62,11 @@ bool tictactoe::hasWon() {
 
 }
 
-std::vector<Move> tictactoe::getAvailableMoves() const{
-	std::vector<Move> result;
-	for(int x = 0; x < getXSize(); x++){
-		for(int y = 0; y < getYSize(); y++){
-			Move actualMove = Move(x, y);
+std::vector<Move2D> tictactoe::getAvailableMoves() const{
+	std::vector<Move2D> result;
+	for(unsigned int x = 0; x < getXSize(); x++){
+		for(unsigned int y = 0; y < getYSize(); y++){
+			Move2D actualMove = Move2D(x, y);
 			//std::cout << "checking move " << x << std::endl;
 			if(isLegalMove(actualMove)){
 				result.push_back(actualMove);
@@ -78,28 +77,15 @@ std::vector<Move> tictactoe::getAvailableMoves() const{
 	return result;
 }
 
-void tictactoe::printBoard(){
-    std::string spacing = "     ";
-    std::string horizontalLine = "  --  --  --";
-	std::cout << spacing << horizontalLine << std::endl;
-	for(int y = 0; y < 3; y++) {
-		std::cout << spacing << "| ";
-		for(int x = 0; x < 3; x++) {
-			std::cout << board.get(x, y) << " | ";
-		}
-		std::cout << std::endl << spacing << horizontalLine << std::endl;
-	}
+int tictactoe::getBoardScore(unsigned int depth){
+	return 0;
 }
 
-Score tictactoe::getBoardScore(unsigned int depth){
-	return Score(Result::t_score, depth, 0);
+Move2D tictactoe::getBotMove(){
+	return bot.getBestMove<decltype(*this), Move2D>(*this, botDepth);
 }
 
-Move tictactoe::getBotMove(){
-	return bot.getBestMove(*this, botDepth);
-}
-
-Move tictactoe::getUserMove(){
+Move2D tictactoe::getUserMove(){
 	if(commandLineMode){
 		std::cout << "type X_POSITION, Y_POSITION and press enter" << std::endl;
 		int x, y;
@@ -113,33 +99,33 @@ Move tictactoe::getUserMove(){
 			}
 			std::cout << "input " << input << std::endl;
 			std::stringstream ss(input);
-			if(ss >> x >> y && isLegalMove(Move(x-1, y-1))) {
+			if(ss >> x >> y && isLegalMove(Move2D(x-1, y-1))) {
 				break;
 			}
 			std::cout << "input not correct" << std::endl;
 			std::cin.clear();
 		}
-		return Move(x-1, y-1);
+		return Move2D(x-1, y-1);
 	}
 	else{
 		std::cout << "This game only works in command line mode" << std::endl;
 		assert(0);
-		return Move(0, 0);
+		return Move2D(0, 0);
 	}
 }
 
 void tictactoe::startGame(){
 	if(commandLineMode){
-		printBoard();
+		state.board.print();
 		while(!hasEnded()){
 			nextPlayer();
-			Move move;
+			Move2D move;
 			if(isAITurn()){
 				std::cout << "it's player " << getCurrentPlayerPiece().getValue() << "'s turn" << std::endl;
 				std::cout << "(bot's turn)" << std::endl;
 				move = getBotMove();
 				std::cout << "Bot's move: ";
-				printMove(move);
+				move.print();
 			}
 			else{
 				std::cout << "it's player " << getCurrentPlayerPiece().getValue() << "'s turn" << std::endl;
@@ -147,7 +133,7 @@ void tictactoe::startGame(){
 			}
 			playMove(move);
 			std::cout << "Possible move size " << getAvailableMoves().size() << std::endl;
-			printBoard();
+			state.board.print();
 			if(hasWon()){
 				std::cout << "Game has ended, player " << getCurrentPlayerPiece().getValue() << " has won" << std::endl;
 			}
@@ -160,10 +146,4 @@ void tictactoe::startGame(){
 		std::cout << "This game only works in command line mode" << std::endl;
 		assert(0);
 	}
-}
-
-void tictactoe::testGame(){
-	printBoard();
-	std::cout << "Current player: " << getCurrentPlayerPiece().getValue() << std::endl; 
-	bot.testBot(*this, botDepth);
 }

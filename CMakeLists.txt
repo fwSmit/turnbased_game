@@ -1,37 +1,42 @@
-cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+set (CMAKE_CXX_STANDARD 17)
+# assuming gcc
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
-project (turnbased_game)
+project (turnbased_game_project CXX)
 
-set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
+#file globing
+file(GLOB_RECURSE sources src/*.cpp src/*.h)
+file(GLOB_RECURSE data resources/*)
+
+add_executable(turnbased_game ${sources} ${data})
+
+#copy resources to build directory
+file(COPY ${data} DESTINATION resources)
+
+#armadillo library
+# find_package(Armadillo REQUIRED)
 
 #include the necessary libraries
-find_package(SFML 2 REQUIRED system window graphics network audio)
-find_package(TGUI 0.7)
+find_package(SFML 2 REQUIRED system window graphics)
+find_package(TGUI REQUIRED)
 
 if(NOT SFML_FOUND)
-    message(FATAL_ERROR "Could not find SFML")
+	message(FATAL_ERROR "Could not find SFML")
 endif()
 
 if(NOT TGUI_FOUND)
-	message(WARNING "Could not find TGUI")
+	message(FATAL_ERROR "Could not find TGUI")
 endif()
 
+# if(NOT ARMADILLO_FOUND)
+	# message(FATAL_ERROR "Could not find armadillo")
+# endif()
+
 include_directories(${SFML_INCLUDE_DIR})
+include_directories(${TGUI_INCLUDE_DIR})
+# include_directories(${ARMADILLO_INCLUDE_DIRS})
 
-include_directories(${CMAKE_SOURCE_DIR})
-
-set (CMAKE_CXX_STANDARD 11)
-add_executable(turnbased_game Game.cpp tictactoe.cpp connect4.cpp main.cpp Bot.cpp Reversi.cpp)
-
-target_link_libraries(turnbased_game ${SFML_LIBRARIES})
-
-# Locate GTest
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
-
-add_executable(runTests tests.cpp)
-target_link_libraries(runTests ${GTEST_LIBRARIES} pthread)
-
-ENABLE_TESTING()
-ADD_TEST(turnbased_game runTests)
+target_link_libraries(turnbased_game ${SFML_LIBRARIES} ${TGUI_LIBRARY}) # ${ARMADILLO_LIBRARIES})
