@@ -1,5 +1,5 @@
-#include "Game.h"
 #include <iostream>
+#include "Game.h"
 
 Game::Game(bool _isFirstPlayerAI, bool _isSecondPlayerAI, bool _commandLineMode) 
 	: isFirstPlayerAI(_isFirstPlayerAI), isSecondPlayerAI(_isSecondPlayerAI), commandLineMode(_commandLineMode){
@@ -43,3 +43,4 @@ bool Game::isAITurn(){
 		return isSecondPlayerAI;
 	}
 }
+

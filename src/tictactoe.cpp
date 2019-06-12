@@ -18,10 +18,6 @@ bool tictactoe::isLegalMove(Move2D move) const{
 	return true;
 }
 
-bool tictactoe::hasEnded(){
-	return isBoardFull() || hasWon();
-}
-
 void tictactoe::playMove(Move2D move){
 	if(isLegalMove(move)){
 		//std::cout << "Playing move " << move.x << ", " << move.y << std::endl;
@@ -77,12 +73,23 @@ std::vector<Move2D> tictactoe::getAvailableMoves() const{
 	return result;
 }
 
-int tictactoe::getBoardScore(unsigned int depth){
-	return 0;
+int tictactoe::getScore(unsigned int depth, bool isMaximizingPlayer){
+	if(hasWon()){
+		if(isMaximizingPlayer){
+			return Bot::winning_score;
+		}
+		else{
+			return -Bot::winning_score;
+		}
+	}
+	else{
+		return 0;
+	}
 }
 
-Move2D tictactoe::getBotMove(){
-	return bot.getBestMove<decltype(*this), Move2D>(*this, botDepth);
+Move2D tictactoe::getBotMove() const{
+	std::cout << "Getting bot move" << std::endl;
+	return bot.getBestMove<tictactoe, Move2D>(*this, botDepth);
 }
 
 Move2D tictactoe::getUserMove(){
@@ -117,6 +124,9 @@ Move2D tictactoe::getUserMove(){
 void tictactoe::startGame(){
 	if(commandLineMode){
 		state.board.print();
+		// std::cout << "We got up till this point" << std::endl;
+		// bool hasEnd = hasEnded();
+	// }
 		while(!hasEnded()){
 			nextPlayer();
 			Move2D move;
@@ -143,7 +153,20 @@ void tictactoe::startGame(){
 		}
 	}
 	else{
-		std::cout << "This game only works in command line mode" << std::endl;
+		std::cout << "This game only works in command line mode. Change the last argument of class tictactoe to true" << std::endl;
 		assert(0);
 	}
+}
+
+bool tictactoe::hasEnded(){
+	return state.board.isFull() || hasWon();
+}
+
+void tictactoe::test(){
+	playMove(Move2D(1,1));
+	playMove(Move2D(2,2));
+	// playMove(Move2D(1,2));
+	// int score = bot.getScore<tictactoe, Move2D>(*this, Move2D(0, 1), -Bot::a_lot [>alpha*/, Bot::a_lot /*beta<], 2, true);
+	// std::cout << score << std::endl;
+	// state.board.print();
 }

@@ -93,12 +93,12 @@ class Game{
 protected:
 	friend  class Bot;
 	State state;
-	const unsigned int botDepth = 5;
+	const unsigned int botDepth = 2;
 	bool isFirstPlayerAI;
 	bool isSecondPlayerAI;
 	bool commandLineMode;
 	virtual bool isBoardFull(){return state.board.isFull();}
-	virtual int getBoardScore(unsigned int depth) = 0;
+	virtual int getScore(unsigned int depth, bool isMaximizingPlayer) = 0;
 	bool isAITurn();
 	void getMove(); // either takes input from the user or makes the bot decide for the best move
 					// depending on whose turn it is
@@ -109,6 +109,7 @@ public:
 	virtual Piece getCurrentPlayerPiece() const;
 	virtual Piece getOtherPlayerPiece() const;
 	virtual bool hasWon() = 0; // has the current player won?
+	virtual bool hasEnded() = 0;
 	Game(bool _isFirstPlayerAI, bool _isSecondPlayerAI, bool _commandLineMode = true);
 private:
 };
